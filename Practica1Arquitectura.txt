@@ -1,0 +1,157 @@
+Ejercicio deepClone
+  
+const deepClone = (obj)=>{
+    let clone = {};
+    for(let key in obj){
+        let value = obj[key];
+        if(typeof(value) != 'object'){
+            clone[key] = value;
+        }else{
+            clone[key] = deepClone(value);
+            console.log(clone[key]);
+        }
+    }    
+    return clone;
+}
+
+const persona = { 
+    nombre: "jorge", 
+    edad:40, 
+    profesion: "Informatico", 
+    email: "pepe@mail.com",
+    amigos:[
+      {
+          nombre: "Juan",
+          edad: 40,
+          profesion: "Mecánico",
+	    amigos:[
+              {
+                nombre: "María",
+                edad: 42,
+                profesion: "Vendedora",
+                amigos:[
+                    {
+                        nombre: "Esther",
+                        edad: 88,
+                        profesion: "Retirada"
+                    }
+                ]
+              }
+          ]
+      }, 
+      {
+          nombre: "Santiago",
+          edad: 21,
+          profesion: "Médico"
+      }, 
+      {
+          nombre: "Jose",
+          edad: 55,
+          profesion: "Político"
+      },
+    ],                        
+};
+
+const objetoNumerico = {value1:1, value2:2, value3:3}
+
+console.log(deepClone(persona));
+console.log(deepClone(objetoNumerico ));
+
+*****************************************************************************
+Ejercicio deepPrint
+const deepPrint = (obj)=>{
+    Object.keys(obj).forEach( key => {
+        console.log(key + ": "+ obj[key]);        
+    });
+}
+
+const persona = { 
+    nombre: "jorge", 
+    edad:40, 
+    profesion: "Informatico", 
+    email: "pepe@mail.com",
+    amigos:[
+      {
+          nombre: "Juan",
+          edad: 40,
+          profesion: "Mecánico"
+      }, 
+      {
+          nombre: "Santiago",
+          edad: 21,
+          profesion: "Médico"
+      }, 
+      {
+          nombre: "Jose",
+          edad: 55,
+          profesion: "Político"
+      },
+    ],                        
+};
+deepPrint(persona);
+*****************************************************************************
+Ejercicio 3 deepEqual
+// Objetos diferentes en sus valores pero iguales en etiquetas (NO SON IGUALES)
+const persona1 = {nombre: "Juan", edad: 20}
+const persona2 = {nombre: "Juan", edad: 19}
+
+// Objetos iguales en etiquetas y valores (SON IGUALES)
+const persona3 = {nombre: "Maria", edad: 29, dni: "Y490485563F" }
+const persona4 = {nombre: "Maria", edad: 29, dni: "Y490485563F"}
+
+// Objetos diferentes en sus valores y en sus etiquetas (NO SON IGUALES)
+const persona5 = {nombre: "Santiago", edad: 21}
+const persona6 = {profesion: "Informático", edad: 36}
+
+const deepEqual = (object1,object2): boolean =>{
+    
+    let iguales:boolean;
+
+    // Comprueba si de forma directa apuntan al mismo sitio (Idénticos)
+  if (object1 === object2) {
+
+      iguales = true;
+      return iguales;
+
+  }
+  // Comprueba que cada parámetro es un Objeto y existen (no son nulos)
+  else if ((typeof object1 == "object" && object1 != null) && (typeof object2 == "object" && object2 != null)) {
+    
+    // Comprobar que ambos objetos tienen exactamente la misma cantidad de etiquetas o key
+    if (Object.keys(object1).length != Object.keys(object2).length){
+        iguales = false;
+        return iguales;
+    }
+
+    // Recorremos todas las etiquetas o llaves de cada objeto
+    for (var etiqueta in object1) {
+      //Comprobamos que cada etiqueta de un objeto esté contenido en el otro objeto
+      if (object2.hasOwnProperty(etiqueta))
+      {  
+         // Comprueba si los valores de un objeto con sus etiquetas son exactamente iguales a la del otro objeto 
+        if (!deepEqual(object1[etiqueta], object2[etiqueta])){
+          iguales = false;  
+          return iguales;
+        }
+      }
+      else{
+
+        iguales =false;
+        return iguales;
+
+      }
+    }
+    iguales = true;
+    return iguales;
+  }
+  else {
+      iguales =false;
+      return iguales;
+  }
+    
+}
+
+console.log(deepEqual(persona1,persona2));
+console.log(deepEqual(persona3,persona4));
+console.log(deepEqual(persona5,persona6));
+
